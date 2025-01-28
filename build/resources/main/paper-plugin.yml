@@ -1,5 +1,5 @@
 name: Festival
-version: '1.0-SNAPSHOT'
+version: '5.0-SNAPSHOT'
 main: org.zzzzzzz.festival.Festival
 api-version: '1.21'
 dependencies:

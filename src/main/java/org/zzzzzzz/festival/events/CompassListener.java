@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -65,14 +66,7 @@ public class CompassListener implements Listener {
     @EventHandler
     public void onPlayerEnterWorld(PlayerJoinEvent event){
         event.getPlayer().getInventory().addItem(
-                new ItemStack(Material.COMPASS)
-        );
-    }
-
-    @EventHandler
-    public void onPlayerRespawn(PlayerRespawnEvent event){
-        event.getPlayer().getInventory().addItem(
-                new ItemStack(Material.COMPASS)
+                ItemStack.of(Material.COMPASS)
         );
     }
 }

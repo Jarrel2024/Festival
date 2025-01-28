@@ -30,7 +30,7 @@ public class EnderDragonListener implements Listener {
 
             Player killer = enderDragon.getKiller();
             if (killer != null) {
-                PlayerWin win =new PlayerWin(killer, killer.getPlayerTime());
+                PlayerWin win =new PlayerWin(killer, (double) killer.getPlayerTime() /20);
                 winners.add(win);
                 makePlayerWin(win);
             }

@@ -47,7 +47,7 @@ public class DeathListener implements Listener {
 
         diedPlayers.add(new PlayerDeath(player,respawnTime,diedLoc));
 
-        player.sendMessage(String.format("您已死亡，剩余复活时间:%d秒",300));
+        player.sendMessage(String.format("您已死亡，剩余复活时间:%d秒",respawnTime/20));
     }
 
     private static void setDeath(Player player) {
@@ -188,10 +188,9 @@ public class DeathListener implements Listener {
 
         if (player.getRespawnLocation() == null){
             player.teleport(Bukkit.getWorlds().getFirst().getSpawnLocation());
-            return;
+        }else{
+            player.teleport(player.getRespawnLocation());
         }
-        player.teleport(player.getRespawnLocation());
-        player.getInventory().addItem(new ItemStack(Material.COMPASS));
 
         new BukkitRunnable(){
             @Override
@@ -200,6 +199,10 @@ public class DeathListener implements Listener {
                         Component.text("复活了！！！"),
                         Component.empty()
                 ));
+
+                player.getInventory().addItem(
+                        ItemStack.of(Material.COMPASS)
+                );
             }
         }.runTaskLater(Festival.get(),20);
     }
