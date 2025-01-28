@@ -3,9 +3,11 @@ package org.zzzzzzz.festival;
 import com.sk89q.worldedit.regions.Region;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.zzzzzzz.festival.commands.InitGameCommand;
 import org.zzzzzzz.festival.commands.TopListCommand;
 import org.zzzzzzz.festival.events.CompassListener;
 import org.zzzzzzz.festival.events.DeathListener;
@@ -40,6 +42,7 @@ public final class Festival extends JavaPlugin {
 
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
             commands.registrar().register(TopListCommand.createCommand().build());
+            commands.registrar().register(InitGameCommand.createCommand().build());
         });
 
         Logger logger = getLogger();

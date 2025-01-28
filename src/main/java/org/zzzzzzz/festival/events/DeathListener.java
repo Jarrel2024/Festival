@@ -17,8 +17,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.zzzzzzz.festival.Festival;
 import org.zzzzzzz.festival.tools.PlayerLogger;
 
@@ -29,6 +31,7 @@ import java.util.Set;
 
 public class DeathListener implements Listener {
     private final Set<PlayerDeath> diedPlayers = new HashSet<>();
+    private final static int respawnTime = 90 * 20;
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event){
@@ -40,25 +43,22 @@ public class DeathListener implements Listener {
 
         player.teleport(diedLoc);
 
-        final int fiveMinutes = 5*60*20;
-
         setDeath(player);
 
-        diedPlayers.add(new PlayerDeath(player,fiveMinutes,diedLoc));
+        diedPlayers.add(new PlayerDeath(player,respawnTime,diedLoc));
 
         player.sendMessage(String.format("您已死亡，剩余复活时间:%d秒",300));
     }
 
     private static void setDeath(Player player) {
-        final int fiveMinutes = 5*60*20;
         player.setGameMode(GameMode.ADVENTURE);
         player.setAllowFlight(true);
         player.setFlying(true);
-        player.setNoDamageTicks(fiveMinutes);
+        player.setNoDamageTicks(respawnTime);
 
-        player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, fiveMinutes,1));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, fiveMinutes,1));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE,fiveMinutes,6));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, respawnTime,1));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, respawnTime,1));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE,respawnTime,6));
     }
 
     private int tickCount = 0;
@@ -191,10 +191,17 @@ public class DeathListener implements Listener {
             return;
         }
         player.teleport(player.getRespawnLocation());
-        player.showTitle(Title.title(
-                Component.text("复活了！！！"),
-                Component.empty()
-        ));
+        player.getInventory().addItem(new ItemStack(Material.COMPASS));
+
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                player.showTitle(Title.title(
+                        Component.text("复活了！！！"),
+                        Component.empty()
+                ));
+            }
+        }.runTaskLater(Festival.get(),20);
     }
 }
 
