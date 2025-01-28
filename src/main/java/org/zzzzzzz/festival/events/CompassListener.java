@@ -3,6 +3,7 @@ package org.zzzzzzz.festival.events;
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -28,6 +29,7 @@ public class CompassListener implements Listener {
             Location minLocation = null;
             for (Player target:players){
                 if (target == player) continue;
+                if (player.getGameMode() != GameMode.SURVIVAL) continue;
                 if (target.getWorld() != player.getWorld()) continue;
 
                 double distance = player.getLocation().distanceSquared(target.getLocation());
